@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class GameHandler : MonoBehaviour
 {
+    [SerializeField] private Snake snake;
+
+    private LevelGrid levelGrid;
     void Start()
     {
-        Debug.Log("starrt");
-        GameObject snakeHeadGameObject = new GameObject();
-        SpriteRenderer snakeSpriteRenderer= snakeHeadGameObject.AddComponent<SpriteRenderer>();
-        snakeSpriteRenderer.sprite = GameAssets.i.SnakeHeadSprite;
+        levelGrid = new LevelGrid(20, 20);
+        snake.SetUp(levelGrid);
+        levelGrid.SetUp(snake);
 
 
-        
+
     }
 
     void Update()
