@@ -1,3 +1,5 @@
+using CodeMonkey;
+using CodeMonkey.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -78,27 +80,16 @@ public class Snake : MonoBehaviour
         gridMoveTimer += Time.deltaTime;
         if (gridMoveTimer > gridMoveTimerMax)
         {
-            
-            gridPosition += gridMoveDirection;
             gridMoveTimer -= gridMoveTimerMax;
-            snakeBodyPositions.Insert(0, gridPosition);
-            Debug.Log(snakeBodyPositions.Count);
-            transform.position = new Vector3(gridPosition.x, gridPosition.y);
-            transform.eulerAngles = new Vector3(0, 0, GetAngleFromVector(gridMoveDirection)-90);
-            bool snakeAte=levelGrid.SnakeAtefood(gridPosition);
-            if (snakeAte)
-            {
-                snakeBodySize++;
 
-            }
+
+            snakeBodyPositions.Insert(0, gridPosition);
+
+
+            gridPosition += gridMoveDirection;
             if (snakeBodyPositions.Count >= snakeBodySize + 1)
             {
-                snakeBodyPositions.RemoveAt(snakeBodyPositions.Count-1);
-                if (displayedSpriteObjects.Count != 0)
-                {
-                    Object.Destroy(displayedSpriteObjects[displayedSpriteObjects.Count - 1]);
-
-                }
+                snakeBodyPositions.RemoveAt(snakeBodyPositions.Count - 1);
 
 
 
@@ -106,9 +97,14 @@ public class Snake : MonoBehaviour
             for (int i = 0; i < snakeBodyPositions.Count; i++)
             {
                 Vector2Int pos = snakeBodyPositions[i];
-                DisplaySpriteAtPosition(pos);
-
+                World_Sprite worldSprite = World_Sprite.Create(new Vector3(snakeBodyPositions.x, snakeBodyPositions.y), Vector3.one * .5f, Color.white);
+                FunctionTimer.Create(worldSprite.DestroySelf, gridMoveTimerMax);
+/*                DisplaySpriteAtPosition(pos);
+*/
             }
+            transform.position = new Vector3(gridPosition.x, gridPosition.y);
+            transform.eulerAngles = new Vector3(0, 0, GetAngleFromVector(gridMoveDirection) - 90);
+
 
 
         }
